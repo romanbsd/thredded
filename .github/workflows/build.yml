@@ -134,14 +134,33 @@ jobs:
         restore-keys: |
           onebox-data-and-views-${{ runner.os }}-
 
-    - name: "Check that assets:precompile works (sqlite3 only)"
+    - name: Restore compiled assets cache
+      uses: actions/cache/restore@v4
+      id: restore-assets-cache
       if: matrix.db == 'sqlite3'
+      with:
+        path: |
+          spec/dummy/public/assets
+          spec/dummy/tmp/cache/assets
+        key: assets-${{ matrix.rails_version }}-${{ hashFiles('spec/dummy/app/assets/**/*', 'spec/dummy/app/javascript/**/*') }}
+        restore-keys: |
+          assets-${{ matrix.rails_version }}-
+
+    - name: "Check that assets:precompile works (sqlite3 only)"
+      if: matrix.db == 'sqlite3' && steps.restore-assets-cache.outputs.cache-hit != 'true'
       working-directory: spec/dummy
       run: |
         export PRECOMPILE_ASSETS=1
         bundle exec rails assets:precompile
-        # clean up
-        bundle exec rails assets:clobber
+
+    - name: Save compiled assets cache
+      uses: actions/cache/save@v4
+      if: matrix.db == 'sqlite3' && steps.restore-assets-cache.outputs.cache-hit != 'true'
+      with:
+        path: |
+          spec/dummy/public/assets
+          spec/dummy/tmp/cache/assets
+        key: assets-${{ matrix.rails_version }}-${{ hashFiles('spec/dummy/app/assets/**/*', 'spec/dummy/app/javascript/**/*') }}
 
     - name: "Run Tests: test:nojs"
       run: |
