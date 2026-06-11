@@ -67,7 +67,7 @@ jobs:
           - rails_version: 7.2
             ruby: 3.2
           - rails_version: 8.0
-            ruby: 3.4
+            ruby: "4.0"
 
     env:
       RAILS_ENV: test
@@ -221,7 +221,7 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.4
+        ruby-version: "4.0"
         bundler-cache: true
 
     - name: Rubocop
@@ -242,7 +242,7 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.4
+        ruby-version: "4.0"
         bundler-cache: true
 
     - name: i18n health

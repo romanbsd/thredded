@@ -36,7 +36,7 @@ group :test do
   gem 'webmock'
 end
 
-gem 'db_text_search', github: 'thredded/db_text_search', branch: 'main'
+gem 'db_text_search', github: 'romanbsd/db_text_search', branch: 'main'
 gem 'thredded-markdown_coderay', git: 'https://github.com/thredded/thredded-markdown_coderay', branch: 'main'
 gem 'thredded-markdown_katex', git: 'https://github.com/thredded/thredded-markdown_katex', branch: 'main'
 
